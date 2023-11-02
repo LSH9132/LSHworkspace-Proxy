@@ -5,9 +5,3 @@ LABEL authors="lsh"
 #RUN rm -r /etc/nginx/nginx.conf
 
 COPY nginx /etc/nginx
-
-WORKDIR /workspace
-
-COPY init.sh .
-
-RUN sh init.sh
