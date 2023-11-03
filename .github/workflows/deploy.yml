@@ -69,6 +69,30 @@ jobs:
         # ecr: # optional, default is auto
         # Log out from the Docker registry at the end of a job
         logout: true # optional, default is true
+
+    - name: Docker Metadata action
+      # You may pin to the exact commit or the version.
+      # uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934
+      uses: docker/metadata-action@v5.0.0
+      with:
+        # Where to get context data. Allowed options are "workflow"  (default), "git".
+        # context: # default is workflow
+        # List of Docker images to use as base name for tags
+        images: ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}
+        # List of tags as key-value pair attributes
+        # tags: # optional
+        # Flavors to apply
+        # flavor: # optional
+        # List of custom labels
+        # labels: # optional
+        # Separator to use for tags output (default \n)
+        # sep-tags: # optional
+        # Separator to use for labels output (default \n)
+        # sep-labels: # optional
+        # Bake target name (default docker-metadata-action)
+        # bake-target: # optional
+        # GitHub Token as provided by secrets
+        # github-token: # default is ${{ github.token }}
         
     - name: Build and push Docker images
       # You may pin to the exact commit or the version.
@@ -148,13 +172,13 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          docker pull lshworkspace/lshworkspace-proxy:latest
+          docker pull ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest
           # Check if the service already exists
           if ! docker service ls --filter "name=${{ vars.SERVICE_NAME }}" | grep -q "${{ vars.SERVICE_NAME }}"; then
             # Deploy Nginx service with 2 replicas
-            docker service create --replicas 2 --name ${{ vars.SERVICE_NAME }} -p 80:80 lshworkspace/lshworkspace-proxy:latest
+            docker service create --replicas 2 --name ${{ vars.SERVICE_NAME }} -p 80:80 ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest
           fi
           docker service update --log-driver local --log-opt local-file=/var/log/nginx ${{ vars.SERVICE_NAME }}
-          docker service update --image lshworkspace/lshworkspace-proxy:latest --update-parallelism 1 --update-delay 30s ${{ vars.SERVICE_NAME }}
+          docker service update --image ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest --update-parallelism 1 --update-delay 30s ${{ vars.SERVICE_NAME }}
       env: 
         SERVICE_NAME: ${{ vars.SERVICE_NAME }}
