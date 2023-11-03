@@ -1,0 +1,47 @@
+name: Deploy Nginx to Master Clusters
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Build and Push Docker Image
+      run: |
+        docker build -t lshworkspace-proxy .
+        docker tag lshworkspace-proxy lshworkspace/lshworkspace-proxy:latest
+        echo ${{ secrets.DOCKER_TOKEN }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        docker push lshworkspace/lshworkspace-proxy:latest
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_TOKEN }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: SSH to Master cluster
+      uses: appleboy/ssh-action@v0.5.4
+      with:
+        host: ${{ vars.SERVER_IPADDR }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          docker pull lshworkspace/lshworkspace-proxy:latest
+          # Check if the service already exists
+          if ! docker service ls --filter "name=${{ vars.SERVICE_NAME }}" | grep -q "${{ vars.SERVICE_NAME }}"; then
+            # Deploy Nginx service with 2 replicas
+            docker service create --replicas 2 --name ${{ vars.SERVICE_NAME }} -p 80:80 lshworkspace/lshworkspace-proxy:latest
+          fi
+          docker service update --log-driver local --log-opt local-file=/var/log/nginx ${{ vars.SERVICE_NAME }}
+          docker service update --image lshworkspace/lshworkspace-proxy:latest --update-parallelism 1 --update-delay 30s ${{ vars.SERVICE_NAME }}
+      env: 
+        SERVICE_NAME: ${{ vars.SERVICE_NAME }}
