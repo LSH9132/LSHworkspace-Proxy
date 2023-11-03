@@ -3,10 +3,10 @@ name: Deploy lshworkspace-proxy to Master Clusters
 on:
   push:
     branches:
-      - main
+      - latest
   pull_request:
     branches: 
-      - develop
+      - latest
   workflow_dispatch:
     inputs:
       logLevel:
