@@ -27,7 +27,7 @@ jobs:
     - name: Docker Setup Buildx
       # You may pin to the exact commit or the version.
       # uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226
-      uses: docker/setup-buildx-action@v3.0.0
+      uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226
       # with:
         # Buildx version. (eg. v0.3.0)
         # version: # optional
@@ -57,7 +57,7 @@ jobs:
     - name: Docker Login
       # You may pin to the exact commit or the version.
       # uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d
-      uses: docker/login-action@v3.0.0
+      uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d
       with:
         # Server address of Docker registry. If not set then will default to Docker Hub
         # registry: # optional
@@ -73,7 +73,8 @@ jobs:
     - name: Docker Metadata action
       # You may pin to the exact commit or the version.
       # uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934
-      uses: docker/metadata-action@v5.0.0
+      id: meta
+      uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934
       with:
         # Where to get context data. Allowed options are "workflow"  (default), "git".
         # context: # default is workflow
@@ -97,7 +98,7 @@ jobs:
     - name: Build and push Docker images
       # You may pin to the exact commit or the version.
       # uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09
-      uses: docker/build-push-action@v5.0.0
+      uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09
       with:
         # List of a customs host-to-IP mapping (e.g., docker:10.180.0.1)
         # add-hosts: # optional
@@ -120,9 +121,9 @@ jobs:
         # Build's context is the set of files located in the specified PATH or URL
         context: . # optional
         # Path to the Dockerfile
-        file: ./Dockerfile # optional
+        # file: ./Dockerfile # optional
         # List of metadata for an image
-        # labels: # optional
+        labels: ${{ steps.meta.outputs.labels }} # optional
         # Load is a shorthand for --output=type=docker
         # load: # optional, default is false
         # Set the networking mode for the RUN instructions during build
@@ -152,7 +153,7 @@ jobs:
         # List of SSH agent socket or keys to expose to the build
         # ssh: # optional
         # List of tags
-        tags: lshworkspace/lshworkspace-proxy:$(date +%s) # optional
+        tags: ${{ steps.meta.outputs.tags }} # optional
         # Sets the target stage to build
         # target: # optional
         # Ulimit options (e.g., nofile=1024:1024)
