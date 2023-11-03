@@ -172,7 +172,7 @@ jobs:
         host: ${{ vars.SERVER_IPADDR }}
         port: ${{ secrets.SSH_SERVER_PORT }}
         username: ${{ secrets.SSH_USERNAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        passphrase: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           docker pull ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest
           # Check if the service already exists
