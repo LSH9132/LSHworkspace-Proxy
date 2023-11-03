@@ -180,7 +180,7 @@ jobs:
           if ! docker service ls --filter "name=${{ vars.SERVICE_NAME }}" | grep -q "${{ vars.SERVICE_NAME }}"; then
             # Deploy Nginx service with 2 replicas
             echo "Service doesn't exists Creating..."
-            docker service create --mount type=bind,source=/var/log/com/lshworkspace/nginx,target=/var/log/nginx,rw --constraint "node.labels.manager" --replicas 2 --name ${{ vars.SERVICE_NAME }} -p 80:80 -p 433:433 ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest
+            docker service create --mount type=bind,source=/var/log/com/lshworkspace/nginx,target=/var/log/nginx --constraint "node.labels.manager" --replicas 2 --name ${{ vars.SERVICE_NAME }} -p 80:80 -p 433:433 ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest
           fi
           echo "Service updating..."
           docker service update --image ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest --update-parallelism 1 --update-delay 30s ${{ vars.SERVICE_NAME }}
