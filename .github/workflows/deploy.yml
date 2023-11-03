@@ -135,7 +135,7 @@ jobs:
         # List of output destinations (format: type=local,dest=path)
         # outputs: # optional
         # List of target platforms for build
-        # platforms: # optional
+        platforms: linux/arm64/v8 # optional
         # Generate provenance attestation for the build (shorthand for --attest=type=provenance)
         # provenance: # optional
         # Always attempt to pull all referenced images
