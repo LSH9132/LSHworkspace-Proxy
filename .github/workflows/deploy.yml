@@ -174,7 +174,7 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          mkdir $HOME/com/lshworkspace/nginx || true
+          mkdir -p $HOME/com/lshworkspace/nginx || true
           echo "Pulling docker image..."
           docker pull ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest
           # Check if the service already exists
