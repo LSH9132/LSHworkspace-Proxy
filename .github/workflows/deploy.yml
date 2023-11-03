@@ -29,7 +29,7 @@ jobs:
         docker build -t lshworkspace-proxy .
         docker tag lshworkspace-proxy lshworkspace/lshworkspace-proxy:$(date +%s)
         echo ${{ secrets.DOCKER_TOKEN }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-        docker push lshworkspace/lshworkspace-proxy:$(date +%s)
+        docker push lsh9132/lshworkspace/lshworkspace-proxy:$(date +%s)
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_TOKEN }}
