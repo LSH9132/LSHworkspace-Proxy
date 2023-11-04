@@ -30,11 +30,7 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
-    - name: Build nginx client to Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4.0.0
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+    - name: Build nginx client to Use Node.js
     - run: | 
         cd ./client
         npm ci
