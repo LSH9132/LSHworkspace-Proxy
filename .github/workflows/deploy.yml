@@ -14,9 +14,9 @@ jobs:
   build:
     runs-on: self-hosted
 
-    strategy:
-      matrix:
-        node-version: [18]
+    # strategy:
+    #   matrix:
+    #     node-version: [18]
         
     # timeout-minutes: 40
 
