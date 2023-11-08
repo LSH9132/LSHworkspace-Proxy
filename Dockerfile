@@ -4,6 +4,8 @@ LABEL authors="lsh"
 #RUN rm /etc/nginx/conf.d/default.conf
 #RUN rm -r /etc/nginx/nginx.conf
 
+RUN openssl dhparam -out /etc/nginx/ssl/dhparam.pem 4096
+
 COPY nginx /etc/nginx
 
 COPY ./static /usr/share/nginx/static
