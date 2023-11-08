@@ -12,7 +12,7 @@ on:
 
 jobs:
   build:
-    runs-on: lshworkspace-k00
+    runs-on: self-hosted
 
     strategy:
       matrix:
