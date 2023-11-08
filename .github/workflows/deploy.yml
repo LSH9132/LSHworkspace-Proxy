@@ -12,7 +12,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     strategy:
       matrix:
@@ -32,9 +32,9 @@ jobs:
         cache-dependency-path: client/package-lock.json
 
     - name: Build nginx client to Use Node.js
-      working-directory: client
+      # working-directory: client
       run: | 
-        # cd ./client
+        cd ./client
         npm ci
         npm run build --if-present
         npm test
@@ -153,7 +153,7 @@ jobs:
         # List of output destinations (format: type=local,dest=path)
         # outputs: # optional
         # List of target platforms for build
-        platforms: linux/arm64/v8 # , linux/amd64, linux/arm64 # optional
+        platforms: linux/arm64/v8 #, linux/amd64, linux/arm64 # optional
         # Generate provenance attestation for the build (shorthand for --attest=type=provenance)
         # provenance: # optional
         # Always attempt to pull all referenced images
@@ -171,7 +171,7 @@ jobs:
         # List of SSH agent socket or keys to expose to the build
         # ssh: # optional
         # List of tags
-        tags: latest #${{ steps.meta.outputs.tags }} # optional
+        tags: latest # ${{ steps.meta.outputs.tags }} # optional
         # Sets the target stage to build
         # target: # optional
         # Ulimit options (e.g., nofile=1024:1024)
