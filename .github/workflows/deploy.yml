@@ -195,7 +195,7 @@ jobs:
         script: |
           mkdir -p $HOME/com/lshworkspace/nginx || true
           echo "Pulling docker image..."
-          docker pull ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest
+          docker pull ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:${{ steps.meta.outputs.tags }}
           # Check if the service already exists
           if ! docker service ls --filter "name=${{ vars.SERVICE_NAME }}" | grep -q "${{ vars.SERVICE_NAME }}"; then
             # Deploy Nginx service with 2 replicas
@@ -208,10 +208,10 @@ jobs:
               --replicas 2 \
               -p 80:80 \
               -p 433:433 \
-              ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest
+              ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:${{ steps.meta.outputs.tags }}
           fi
           echo "Service updating..."
-          docker service update --image ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest --update-parallelism 1 --update-delay 30s ${{ vars.SERVICE_NAME }}
+          docker service update --image ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:${{ steps.meta.outputs.tags }} --update-parallelism 1 --update-delay 30s ${{ vars.SERVICE_NAME }}
           echo "DONE Process."
       env: 
         SERVICE_NAME: ${{ vars.SERVICE_NAME }}
