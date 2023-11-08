@@ -200,7 +200,7 @@ jobs:
           if ! docker service ls --filter "name=${{ vars.SERVICE_NAME }}" | grep -q "${{ vars.SERVICE_NAME }}"; then
             # Deploy Nginx service with 2 replicas
             echo "Service doesn't exists Creating..."
-            docker service create --name ${{ vars.SERVICE_NAME }} 
+            docker service create --name ${{ vars.SERVICE_NAME }} \
               --mount type=bind,source=$HOME/com/lshworkspace/nginx,target=/var/log/nginx \
               --mount type=bind,source=/var/lib/letsencrypt,target=/var/lib/letsencrypt,readonly \
               --mount type=bind,source=/etc/letsencrypt,target=/etc/letsencrypt,readonly \
