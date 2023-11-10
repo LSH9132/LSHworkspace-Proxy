@@ -178,13 +178,14 @@ jobs:
             # Deploy Nginx service with 2 replicas
             echo "Service doesn't exists Creating..."
             docker service create --name ${{ vars.SERVICE_NAME }} \
+              --network-add lshworkspace-proxy \
               --mount type=bind,source=$HOME/com/lshworkspace/nginx,target=/var/log/nginx \
               --mount type=bind,source=/var/lib/letsencrypt,target=/var/lib/letsencrypt,readonly \
               --mount type=bind,source=/etc/letsencrypt,target=/etc/letsencrypt,readonly \
               --constraint "node.labels.role==manager" \
               --replicas 2 \
               -p 80:80 \
-              -p 433:433 \
+              -p 443:443 \
               ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest
           fi
           echo "Service updating..."
