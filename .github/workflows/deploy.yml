@@ -189,10 +189,13 @@ jobs:
               -p 80:80 \
               -p 443:443 \
               ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest
+          else
+            echo "Service updating..."
+            docker service update --image ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest ${{ vars.SERVICE_NAME }}
           fi
-          echo "Service updating..."
+          # echo "Service updating..."
           # docker service update --image ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest --update-parallelism 1 --update-delay 30s ${{ vars.SERVICE_NAME }}
-          docker service update --image ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest ${{ vars.SERVICE_NAME }}
+          # docker service update --image ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest ${{ vars.SERVICE_NAME }}
           echo "DONE Process."
       env: 
         SERVICE_NAME: ${{ vars.SERVICE_NAME }}
