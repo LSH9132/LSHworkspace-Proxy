@@ -9,5 +9,6 @@ RUN openssl dhparam -out /etc/nginx/ssl/dhparam.pem 4096
 
 COPY nginx /etc/nginx
 
-COPY ./static /usr/share/nginx/static
-COPY ./client/build /usr/share/nginx/client
+COPY ./share /usr/share/nginx
+#COPY ./static /usr/share/nginx/static
+#COPY ./client/build /usr/share/nginx/client
