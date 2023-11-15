@@ -104,30 +104,39 @@
             </text>
         </div>
         <style>
-            @keyframes textGrow {
-                0% { transform: scale(0); opacity: 0.2; }
+            @keyframes textGrow0 {
+                0% { transform: scale(0); opacity: 0; }
+                20% { transform: scale(0); opacity: 0; }
+                100% { transform: scale(1); opacity: 1;}
+            }
+
+            @keyframes textGrow1 {
+                0% { transform: scale(0); opacity: 0; }
+                35% { transform: scale(0); opacity: 0; }
                 100% { transform: scale(1); opacity: 1;}
             }
 
             @keyframes textOpac {
                 0% { opacity: 0; }
+                35% { opacity: 0; }
                 100% { opacity: 1;}
             }
 
             .h1-text-grow {
-                animation: textGrow 1.2s ease;
-                animation-duration: 1.4s;
+                animation: textGrow0 1.2s ease;
+                animation-duration: 1.2s;
             }
 
             .h2-opac {
-                animation: textOpac 2s ease;
-                animation-duration: 2s;
+                animation: textGrow1 1s ease-out;
+                animation-duration: 1.25s;
+                /*animation-delay: 0.01s;*/
             }
 
             .text-opac {
-                animation: textOpac 1s ease;
+                animation: textOpac 1s ease-out;
                 /*animation-delay: 0.5s;*/
-                animation-duration: 1s;
+                animation-duration: 1.25s;
             }
         </style>
     </div>
