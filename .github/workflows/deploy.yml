@@ -12,7 +12,7 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
 #    strategy:
 #      matrix:
@@ -159,7 +159,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    # timeout-minutes: 3
 
     steps:
     - name: SSH to Master cluster
