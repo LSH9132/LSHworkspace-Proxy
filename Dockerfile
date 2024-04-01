@@ -9,7 +9,7 @@ RUN mkdir -p /etc/nginx/ssl
 # RUN openssl dhparam -out /etc/nginx/ssl/dhparam.pem 4096
 
 # 테스트 용
-RUN openssl dhparam -out /etc/nginx/ssl/dhparam.pem 64
+RUN openssl dhparam -out /etc/nginx/ssl/dhparam.pem 1024
 
 COPY nginx /etc/nginx
 
