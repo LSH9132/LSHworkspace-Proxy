@@ -12,3 +12,6 @@ docker node update --lable-add manager lshworkspace-m00
 ```bash
 docker network create --attachable --driver overlay lshworkspace-proxy
 ```
+
+## 도커로그인
+서버에서 도커 로그인을 해줘 한다. 첫번쨰 설정할때
