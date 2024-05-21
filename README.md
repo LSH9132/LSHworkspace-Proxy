@@ -3,3 +3,12 @@
 ```bash
 docker node update --lable-add manager lshworkspace-m00
 ```
+
+
+## 네트워크 설정
+
+과거의 내가 네트워크 자동설정 코드를 안작성 해뒀다, 미래의 나여 하거라
+(https://watch-n-learn.tistory.com/49)
+```bash
+docker network create --attachable --driver overlay lshworkspace-proxy
+```
