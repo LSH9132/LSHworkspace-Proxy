@@ -86,32 +86,36 @@ jobs:
 
             echo $GITHUB_TOKEN | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+               
+            docker stop $CONTAINER_NAME || true
+            docker rm $CONTAINER_NAME || true
+            docker run -d --name $CONTAINER_NAME -p 80:80 -p 443:443 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
-            if ! docker service ls --filter "name=${{ vars.SERVICE_NAME }}" | grep -q "${{ vars.SERVICE_NAME }}"; then
-            # Deploy Nginx service with 2 replicas
-            echo "Service doesn't exists Creating..."
-            docker service create --name ${{ vars.SERVICE_NAME }} \
-              --network lshworkspace-proxy \
-              --mount type=bind,source=$HOME/com/lshworkspace/nginx,target=/var/log/nginx \
-              --mount type=bind,source=/var/lib/letsencrypt,target=/var/lib/letsencrypt,readonly \
-              --mount type=bind,source=/etc/letsencrypt,target=/etc/letsencrypt,readonly \
-              --constraint "node.labels.role==manager" \
-              --replicas 2 \
-              --update-delay 20s \
-              --update-parallelism 1 \
-              -p 80:80 \
-              -p 443:443 \
-              ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest
-          else
-            echo "Service updating..."
-            docker service update ${{ vars.SERVICE_NAME }} --image ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest
-          fi
-          # echo "Service updating..."
-          # docker service update --image ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest --update-parallelism 1 --update-delay 30s ${{ vars.SERVICE_NAME }}
-          # docker service update --image ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest ${{ vars.SERVICE_NAME }}
-          echo "DONE Process."
-            
-            # docker stop $CONTAINER_NAME || true
-            # docker rm $CONTAINER_NAME || true
-            # docker run -d --name $CONTAINER_NAME -p 3000:3000 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+#            TODO FIX THIS SOMEDAY
+
+#            if ! docker service ls --filter "name=${{ vars.SERVICE_NAME }}" | grep -q "${{ vars.SERVICE_NAME }}"; then
+#              # Deploy Nginx service with 2 replicas
+#              echo "Service doesn't exists Creating..."
+#              docker service create --name ${{ vars.SERVICE_NAME }} \
+#                --network lshworkspace-proxy \
+#                --mount type=bind,source=$HOME/com/lshworkspace/nginx,target=/var/log/nginx \
+#                --mount type=bind,source=/var/lib/letsencrypt,target=/var/lib/letsencrypt,readonly \
+#                --mount type=bind,source=/etc/letsencrypt,target=/etc/letsencrypt,readonly \
+#                --constraint "node.labels.role==manager" \
+#                --replicas 2 \
+#                --update-delay 20s \
+#                --update-parallelism 1 \
+#                -p 80:80 \
+#                -p 443:443 \
+#                ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest
+#            else
+#              echo "Service updating..."
+#              docker service update ${{ vars.SERVICE_NAME }} --image ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest
+#            fi
+#            # echo "Service updating..."
+#            # docker service update --image ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest --update-parallelism 1 --update-delay 30s ${{ vars.SERVICE_NAME }}
+#            # docker service update --image ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest ${{ vars.SERVICE_NAME }}
+#            echo "DONE Process."
+              
+              
           EOF
