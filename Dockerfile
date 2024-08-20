@@ -2,8 +2,8 @@ FROM nginx:1.25
 #FROM nginx:stable-alpine3.17
 LABEL authors="lsh"
 
-RUN rm /etc/nginx/conf.d/default.conf
-RUN rm -r /etc/nginx/nginx.conf
+# RUN rm /etc/nginx/conf.d/default.conf
+# RUN rm -r /etc/nginx/nginx.conf
 
 
 RUN mkdir -p /etc/nginx/ssl
