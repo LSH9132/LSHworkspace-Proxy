@@ -19,8 +19,8 @@ jobs:
     permissions:
       contents: read
       packages: write
-      # attestations: write
-      # id-token: write
+      attestations: write
+      id-token: write
       # 
     steps:
       - name: Checkout repository
@@ -117,5 +117,5 @@ jobs:
 #            # docker service update --image ${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_IMAGE_NAME }}:latest ${{ vars.SERVICE_NAME }}
 #            echo "DONE Process."
               
-              
-          EOF
+
+#          EOF
